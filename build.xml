@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SHH2 Auto Code Project" default="main" basedir=".">
+	
+	<!-- Read project properties from a properties file. -->
+	<property name="build.properties"  value="config/build.properties" />
+	<property file="${build.properties}"/>
+	
+	<!-- 模板文件的声明, read template properties from template.property file -->  
+    <property name="template.properties" value="${basedir}/${template.dir}/${template.property}" />  
+	<property file="${template.properties}"/>
+	
+    <property name="webinf.dir" value="WebRoot" />
+	<!--设定classpath for ContentEngine，这些包不能少-->  
+    <property name="classpath" value="${webinf.dir}/classes" />  
+    
+	<!-- 设置自动生成类路径 -->
+	<path id="compile.classpath">
+		<pathelement path="${classpath}" />
+		<fileset dir="${lib.dir}">
+  			<include name="*.jar"/>
+		</fileset>
+		<!--<pathelement path="bin"/>-->
+	</path>
+	
+	<target name="init" description="Initialize automation environment">
+		<property environment="env" />
+		<echo message="Workspace: ${env.WORKSPACE}" />
+
+		<!-- 建立目录结构 -->  
+	    <mkdir dir="${output.dir}/${outputSrc}/com/action" />  
+	    <mkdir dir="${output.dir}/${outputSrc}/com/bean" />  
+	    <mkdir dir="${output.dir}/${outputSrc}/com/dao" />  
+	    <mkdir dir="${output.dir}/${outputSrc}/com/hbm" />  
+	    <mkdir dir="${output.dir}/${outputSrc}/com/service" />  
+	    <mkdir dir="${output.dir}/${outputSrc}/com/service/impl" />  
+	    <mkdir dir="${output.dir}/${outputSrc}/struts" />  
+	    <mkdir dir="${output.dir}/${outputSrc}/spring" />  
+	    <mkdir dir="${output.dir}/${outputJsp}/${objectName}" />  
+	    <mkdir dir="${classpath}" />  
+		
+		
+		<!-- 此处 舍弃，现在修改成将ContentEngine导出到jar,在调用-->
+		<!--编译核心java文件contentEngine，这个路径根据具体情况设定，也可以在前面对其进行统一声明-->  
+		<!--
+		<javac srcdir="${basedir}/src" destdir="${classpath}">  
+		    <classpath refid="compile.classpath" />  
+		</javac>  
+		-->
+		
+		<echo>
+			Init Finish.
+		</echo>
+				
+	</target>
+	
+	<target name="title">
+		<echo>
+		+---------------------------------+
+		|                                 |
+		|      SSH2 WEB Develop Tool      |
+		|        Auto Generate Code       |
+		|                                 |
+		+---------------------------------+
+		</echo>
+	</target>
+	
+	<target name="main" depends="clean" description="function main" >
+		<antcall target="title"></antcall>
+		<antcall target="init"></antcall>
+		<antcall target="copyResources"></antcall>
+		<antcall target="generateSrc"></antcall>
+		<antcall target="generateJsp"></antcall>
+		<antcall target="generateXmlConfig"></antcall>
+		<echo>
++-----------------------     build ${ObjectName} finish        -----------------------+
+		</echo>
+	</target>
+	
+	 <taskdef name="taskVelocity" classname="com.tools.ContentEngine">
+	 	<classpath refid="compile.classpath"></classpath>
+	</taskdef>
+	
+	<target name="generateSrc">
+		<echo>
+		+---------------------------------+
+		|                                 |
+		|      SSH2 WEB Develop Tool      |
+		|       Generate Java Src         |
+		|                                 |
+		+---------------------------------+
+		</echo>
+		
+		<!-- //定义不同的日期格式   -->
+		<tstamp>
+			<format property="TODAY_CN" pattern="yyyy-MM-dd" locale="zh"/>
+		</tstamp>
+  		<tstamp>
+			<format property="NOW" pattern="yyyy-MM-dd HH:mm:ss" offset="0" unit="hour"/>
+  		</tstamp>
+ 		<!-- //输出的日期格式定义  -->
+		<echo message="${TODAY_CN}" />
+		<echo message="${NOW}" />
+
+		<echo>+----------- Generate ObjectAction.java        -------------------+
+		</echo>
+		<!--运行contentEngine， 生成 ObjectAction.java -->  
+		<taskVelocity 
+			contextproperties="${template.properties}"
+			controltemplate="${ActionTemplate.vm}"
+			templatepath="${basedir}/${template.dir}"
+			outputdirectory="${output.dir}/${outputSrc}/com/action"
+			outputfile="${ObjectName}Action.java"
+		/>
+		<echo>	+----------- Finish Generate ObjectAction.java -------------------+
+		</echo>
+		
+		<echo>	+----------- Generate ObjectDao.java           -------------------+		</echo>
+		<!--运行contentEngine， 生成  ObjectDao.java -->  
+		<taskVelocity 
+			contextproperties="${template.properties}"
+			controltemplate="${DaoTemplate.vm}"
+			templatepath="${basedir}/${template.dir}"
+			outputdirectory="${output.dir}/${outputSrc}/com/dao"
+			outputfile="${ObjectName}Dao.java"
+		/>
+		<echo>	+----------- Finish Generate ObjectDao.java    -------------------+</echo>
+		
+		
+		<echo>	+----------- Generate ObjectService.java           -------------------+</echo>
+		<!--运行contentEngine， 生成  ObjectService.java -->  
+		<taskVelocity 
+			contextproperties="${template.properties}"
+			controltemplate="${ServiceTemplate.vm}"
+			templatepath="${basedir}/${template.dir}"
+			outputdirectory="${output.dir}/${outputSrc}/com/service"
+			outputfile="${ObjectName}Service.java"
+		/>
+		<echo>	+----------- Finish Generate ObjectService.java    -------------------+</echo>
+
+		<echo>	+----------- Generate ObjectServiceImpl.java           -------------------+</echo>
+		<!--运行contentEngine， 生成  ObjectServiceImpl.java -->  
+		<taskVelocity 
+			contextproperties="${template.properties}"
+			controltemplate="${ServiceImplTemplate.vm}"
+			templatepath="${basedir}/${template.dir}"
+			outputdirectory="${output.dir}/${outputSrc}/com/service/impl"
+			outputfile="${ObjectName}ServiceImpl.java"
+		/>
+		<echo>	+----------- Finish Generate ObjectServiceImpl.java    -------------------+</echo>
+
+		<echo>	
+	+-------------- Finish Generate Java Source Code  --------------------------+
+		</echo>
+			
+	</target>
+	
+
+
+	<target name="generateJsp">
+		<echo>
+		+---------------------------------+
+		|                                 |
+		|      SSH2 WEB Develop Tool      |
+		|        Generate Jsp             |
+		|                                 |
+		+---------------------------------+
+		</echo>
+		
+		<echo>	+----------- Generate  query.jsp         -------------------+</echo>
+		<!--运行contentEngine， 生成  query.jsp -->  
+		<taskVelocity 
+			contextproperties="${template.properties}"
+			controltemplate="${JspQueryTemplate.vm}"
+			templatepath="${basedir}/${template.dir}"
+			outputdirectory="${output.dir}/${outputJsp}/${objectName}/"
+			outputfile="query.jsp"
+			hbmxmlfile="${hbmXmlFile}"
+		/>
+		<echo>	+----------- Finish Generate query.jsp    -------------------+</echo>
+		<echo> </echo>
+		<echo>	+----------- Generate  edit.jsp         -------------------+</echo>
+		<!--运行contentEngine， 生成  edit.jsp -->  
+		<taskVelocity 
+			contextproperties="${template.properties}"
+			controltemplate="${JspEditTemplate.vm}"
+			templatepath="${basedir}/${template.dir}"
+			outputdirectory="${output.dir}/${outputJsp}/${objectName}/"
+			outputfile="edit.jsp"
+			hbmxmlfile="${hbmXmlFile}"
+		/>
+		<echo>	+----------- Finish Generate edit.jsp    -------------------+</echo>
+		<echo> </echo>
+		<echo>	+----------- Generate  view.jsp         -------------------+</echo>
+		<!--运行contentEngine， 生成  view.jsp -->  
+		<taskVelocity 
+			contextproperties="${template.properties}"
+			controltemplate="${JspViewTemplate.vm}"
+			templatepath="${basedir}/${template.dir}"
+			outputdirectory="${output.dir}/${outputJsp}/${objectName}/"
+			outputfile="view.jsp"
+			hbmxmlfile="${hbmXmlFile}"
+		/>
+		<echo>	+----------- Finish Generate view.jsp    -------------------+</echo>
+		<echo> </echo>
+		<echo>	+-------------- Finish Generate Jsp Code  --------------------------+
+		</echo>
+	</target>
+	
+	<target name="generateXmlConfig">
+		<echo>	+----------- Generate  struts-sys.xml     -------------------+</echo>
+		<!--运行contentEngine， 生成  struts-sys.xml -->  
+		<taskVelocity 
+			contextproperties="${template.properties}"
+			controltemplate="${struts-sys.vm}"
+			templatepath="${basedir}/${template.dir}"
+			outputdirectory="${output.dir}/${outputSrc}/struts/"
+			outputfile="struts-${objectName}.xml"
+		/>
+		<echo>	+----------- Finish Generate struts-sys.xml    -------------------+</echo>
+		
+		<echo>	+----------- Generate  action-spring.xml     -------------------+</echo>
+		<!--运行contentEngine， 生成  action-spring.xml -->  
+		<taskVelocity 
+			contextproperties="${template.properties}"
+			controltemplate="${action-spring.vm}"
+			templatepath="${basedir}/${template.dir}"
+			outputdirectory="${output.dir}/${outputSrc}/spring/"
+			outputfile="action-${objectName}-spring.xml"
+		/>
+		<echo>	+----------- Finish Generate action-spring.xml    -------------------+</echo>
+		
+		<echo>	+----------- Generate  dao-spring.xml     -------------------+</echo>
+		<!--运行contentEngine， 生成  struts-sys.xml -->  
+		<taskVelocity 
+			contextproperties="${template.properties}"
+			controltemplate="${dao-spring.vm}"
+			templatepath="${basedir}/${template.dir}"
+			outputdirectory="${output.dir}/${outputSrc}/spring/"
+			outputfile="dao-${objectName}-spring.xml"
+		/>
+		<echo>	+----------- Finish Generate dao-spring.xml    -------------------+</echo>
+		
+		<echo>	+----------- Generate  service-spring.xml     -------------------+</echo>
+		<!--运行contentEngine， 生成  service-spring.xml -->  
+		<taskVelocity 
+			contextproperties="${template.properties}"
+			controltemplate="${service-spring.vm}"
+			templatepath="${basedir}/${template.dir}"
+			outputdirectory="${output.dir}/${outputSrc}/spring/"
+			outputfile="service-${objectName}-spring.xml"
+		/>
+		<echo>	+----------- Finish Generate service-spring.xml    -------------------+</echo>
+		
+	</target>
+	
+	<!-- Copy any resource or configuration files from template.src to outputSrc -->  
+    <target name="copyResources">  
+    	<!--
+        <copy todir="${output.dir}/${outputSrc}" includeEmptyDirs="no">  
+            <fileset dir="${template.src}">  
+                <patternset>  
+                    <include name="**/*.conf" />  
+                    <include name="**/*.properties" />  
+                    <include name="**/*.xml" />  
+                </patternset>  
+            </fileset>  
+        </copy>
+        -->  
+    </target>  
+	
+ 	<target name="clean" description="clean dirs">  
+ 		<delete dir="${classpath}" />
+ 		<delete dir="${output.dir}"></delete>
+        <delete dir="${build.dir}" />  
+    </target>  
+	
+	
+</project>

@@ -1,0 +1,245 @@
+﻿
+
+Revision: 7
+Author: karl.li
+Date: 2014年3月31日 14:54:45
+Message:
+加入了修改了部分java和jsp 以及 struts 和 spring 代码，现在生成后直接拷贝到项目中可以直接使用，省去了复制struts和spring中的配置属性
+----
+Modified : /.settings/org.eclipse.core.resources.prefs
+Modified : /Readme.txt
+Modified : /build.xml
+Modified : /config/build.properties
+Added : /ouputcode/WebRoot
+Added : /ouputcode/WebRoot/modules
+Added : /ouputcode/WebRoot/modules/alarmConfig
+Added : /ouputcode/WebRoot/modules/alarmConfig/edit.jsp
+Added : /ouputcode/WebRoot/modules/alarmConfig/query.jsp
+Added : /ouputcode/WebRoot/modules/alarmConfig/view.jsp
+Added : /ouputcode/src
+Added : /ouputcode/src/java
+Added : /ouputcode/src/java/com
+Added : /ouputcode/src/java/com/action
+Added : /ouputcode/src/java/com/action/AlarmConfigAction.java
+Added : /ouputcode/src/java/com/bean
+Added : /ouputcode/src/java/com/dao
+Added : /ouputcode/src/java/com/dao/AlarmConfigDao.java
+Added : /ouputcode/src/java/com/hbm
+Added : /ouputcode/src/java/com/service
+Added : /ouputcode/src/java/com/service/AlarmConfigService.java
+Added : /ouputcode/src/java/com/service/impl
+Added : /ouputcode/src/java/com/service/impl/AlarmConfigServiceImpl.java
+Added : /ouputcode/src/java/spring
+Added : /ouputcode/src/java/spring/action-alarmConfig-spring.xml
+Added : /ouputcode/src/java/spring/dao-alarmConfig-spring.xml
+Added : /ouputcode/src/java/spring/service-alarmConfig-spring.xml
+Added : /ouputcode/src/java/struts
+Added : /ouputcode/src/java/struts/struts-alarmConfig.xml
+Added : /template/control/template-AlarmConfig.properties
+Added : /template/control/template-carExt.properties
+Modified : /template/control/template.properties
+Modified : /template/jsp/edit.jsp
+Modified : /template/jsp/query.jsp
+Modified : /template/jsp/view.jsp
+Modified : /template/src/ObjectAction.java
+Modified : /template/src/ObjectDao.java
+Modified : /template/src/ObjectService.java
+Modified : /template/src/ObjectServiceImpl.java
+Modified : /template/src/struts/struts-sys.xml
+Added : /template/xml/AlarmConfig.hbm.xml
+
+Revision: 6
+Author: karl.li
+Date: 2014年3月31日 0:29:01
+Message:
+加入Readme.txt, 加入生成 struts 和 spring 等配置信息（action, dao, service）
+----
+Added : /Readme.txt
+Modified : /build.xml
+Modified : /config/build.properties
+Deleted : /ouputcode/WEB-INF
+Deleted : /ouputcode/src
+Added : /svn.log
+Modified : /template/control/template.properties
+Added : /template/src/spring
+Added : /template/src/spring/action-spring.xml
+Added : /template/src/spring/dao-spring.xml
+Added : /template/src/spring/service-spring.xml
+Added : /template/src/struts
+Added : /template/src/struts/.struts-sys.mex
+Added : /template/src/struts/struts-sys.xml
+
+
+
+Revision: 5
+Author: karl.li
+Date: 2014年3月30日 22:26:39
+Message:
+
+----
+Deleted : /template/template.properties
+
+Revision: 4
+Author: karl.li
+Date: 2014年3月30日 22:26:02
+Message:
+SHH2 Auto Generate Code Finish
+
+Tools : Ant + Velocity
+
+	>src
+		>java
+			>com
+				>action
+					 BusinessNameAction.java
+				>bean
+					 BusinessNameInfo.java
+				>dao
+					 BusinessNameDao.java
+				>hbm
+					 BusinessNameInfo.hbm.xml
+				>service
+					 BusinessNameService.java
+					>impl
+						 BusinessNameServiceImpl.java
+	WebRoot
+		modules
+			BusinessName
+				 query.jsp
+				 edit.jsp
+				 view.jsp
+----
+Modified : /.settings/org.eclipse.core.resources.prefs
+Modified : /build.xml
+Added : /config
+Added : /config/build.properties
+Modified : /lib/VContentEngine.jar
+Modified : /ouputcode/WEB-INF/modules/car/query.jsp
+Modified : /ouputcode/src/java/com/action/CarAction.java
+Modified : /ouputcode/src/java/com/dao/CarDao.java
+Modified : /ouputcode/src/java/com/service/CarService.java
+Modified : /ouputcode/src/java/com/service/impl/CarServiceImpl.java
+Modified : /src/com/tools/ContentEngine.java
+Deleted : /template/control/build.properties
+Added : /template/control/template.properties
+Modified : /template/jsp/edit.jsp
+Modified : /template/jsp/view.jsp
+
+Revision: 3
+Author: karl.li
+Date: 2014年3月30日 18:13:53
+Message:
+delete old & not use any more files
+----
+Deleted : /src/com/tools/AppException.java
+Deleted : /template/src/ObjectAction.vm
+Deleted : /template/src/ObjectActionTreeview.java
+
+Revision: 2
+Author: karl.li
+Date: 2014年3月30日 18:12:29
+Message:
+输出query.jsp 模版
+1. 首先读取 eclipse自动生成的hibernate 映射文件  Object.hbm.xml, 然后读取 字段列property， 并在query.jsp显示
+2. query.jsp 显示支持list显示和tree显示，只要在template.properties中配置 JspQueryType=tree|list 即可
+
+----
+Modified : /.project
+Added : /.settings/.jsdtscope
+Modified : /.settings/org.eclipse.core.resources.prefs
+Added : /.settings/org.eclipse.wst.jsdt.ui.superType.container
+Added : /.settings/org.eclipse.wst.jsdt.ui.superType.name
+Modified : /build.xml
+Modified : /lib/VContentEngine.jar
+Added : /ouputcode/WEB-INF
+Added : /ouputcode/WEB-INF/modules
+Added : /ouputcode/WEB-INF/modules/car
+Added : /ouputcode/WEB-INF/modules/car/query.jsp
+Added : /ouputcode/src
+Added : /ouputcode/src/java
+Added : /ouputcode/src/java/com
+Added : /ouputcode/src/java/com/action
+Added : /ouputcode/src/java/com/action/CarAction.java
+Added : /ouputcode/src/java/com/bean
+Added : /ouputcode/src/java/com/dao
+Added : /ouputcode/src/java/com/dao/CarDao.java
+Added : /ouputcode/src/java/com/hbm
+Added : /ouputcode/src/java/com/service
+Added : /ouputcode/src/java/com/service/CarService.java
+Added : /ouputcode/src/java/com/service/impl
+Added : /ouputcode/src/java/com/service/impl/CarServiceImpl.java
+Added : /src/com/test/XmlRead.java
+Added : /src/com/tools/Column.java
+Modified : /src/com/tools/ContentEngine.java
+Modified : /src/com/tools/Test.java
+Modified : /template/control/build.properties
+Modified : /template/jsp/query.jsp
+Added : /template/src/ObjectAction.java
+Modified : /template/src/ObjectDao.java
+Modified : /template/src/ObjectService.java
+Modified : /template/src/ObjectServiceImpl.java
+Modified : /template/template.properties
+Added : /template/xml
+Added : /template/xml/Object.hbm.xml
+
+Revision: 1
+Author: karl.li
+Date: 2014年3月30日 1:09:08
+Message:
+代码自动生成器
+----
+Added : /.classpath
+Added : /.project
+Added : /.settings
+Added : /.settings/org.eclipse.core.resources.prefs
+Added : /.settings/org.eclipse.jdt.core.prefs
+Added : /.settings/org.eclipse.ltk.core.refactoring.prefs
+Added : /WebRoot
+Added : /WebRoot/classes
+Added : /bin
+Added : /build.xml
+Added : /lib
+Added : /lib/VContentEngine.jar
+Added : /lib/ant-1.9.3.jar
+Added : /lib/antlr-2.7.5.jar
+Added : /lib/avalon-logkit-2.1.jar
+Added : /lib/commons-collections-3.2.1.jar
+Added : /lib/commons-lang-2.4.jar
+Added : /lib/commons-logging-1.1.jar
+Added : /lib/jdom-1.0.jar
+Added : /lib/log4j-1.2.12.jar
+Added : /lib/maven-ant-tasks-2.0.9.jar
+Added : /lib/oro-2.0.8.jar
+Added : /lib/servletapi-2.3.jar
+Added : /lib/torque-3.1.jar
+Added : /lib/torque-db-model.jar
+Added : /lib/velocity-1.7.jar
+Added : /lib/werken-xpath-0.9.4.jar
+Added : /lib/xml-apis.jar
+Added : /ouputcode
+Added : /src
+Added : /src/com
+Added : /src/com/test
+Added : /src/com/test/HelloVeloctiy.java
+Added : /src/com/test/example.vm
+Added : /src/com/tools
+Added : /src/com/tools/AppException.java
+Added : /src/com/tools/ContentEngine.java
+Added : /src/com/tools/Test.java
+Added : /template
+Added : /template/control
+Added : /template/control/build.properties
+Added : /template/jsp
+Added : /template/jsp/edit.jsp
+Added : /template/jsp/query.jsp
+Added : /template/jsp/view.jsp
+Added : /template/src
+Added : /template/src/ObjectAction.vm
+Added : /template/src/ObjectActionTreeview.java
+Added : /template/src/ObjectDao.java
+Added : /template/src/ObjectService.java
+Added : /template/src/ObjectServiceImpl.java
+Added : /template/template.properties
+Added : /template/velocity.log
+Added : /velocity.log
+
